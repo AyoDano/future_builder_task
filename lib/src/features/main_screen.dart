@@ -9,6 +9,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late TextEditingController _controller;
+  Futurey<String>? _citySearchFuture;
 
   @override
   void initState() {
