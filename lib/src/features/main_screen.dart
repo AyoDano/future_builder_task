@@ -37,7 +37,17 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(height: 32),
               OutlinedButton(
                 onPressed: () {
-                  // TODO: implementiere Suche
+                  final zipCode = _controller.text;
+                  if (zipCode.isNotEmpty) {
+                    setState(() {
+                      _citySearchFuture = getCityFromZip(zipCode);
+                    });
+                  } else {
+                    setState(() {
+                      _citySearchFuture = Future.value(
+                          "Bitte eine gültige Postleitzahl eingeben.");
+                    });
+                  }
                 },
                 child: const Text("Suche"),
               ),
@@ -50,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
                   } else if (snapshot.hasError) {
                     return Text(
                       "Fehler: ${snapshot.error}",
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.red),
                     );
                   } else if (snapshot.hasData) {
                     return Text(
