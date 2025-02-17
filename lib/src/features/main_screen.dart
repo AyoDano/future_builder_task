@@ -8,10 +8,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late TextEditingController _controller;
+
   @override
   void initState() {
     super.initState();
-    // TODO: initiate controllers
+    _controller = TextEditingController();
   }
 
   @override
@@ -22,8 +24,9 @@ class _MainScreenState extends State<MainScreen> {
         child: Center(
           child: Column(
             children: [
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _controller,
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: "Postleitzahl"),
               ),
               const SizedBox(height: 32),
@@ -45,7 +48,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
-    // TODO: dispose controllers
+    _controller.dispose();
     super.dispose();
   }
 
