@@ -9,7 +9,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late TextEditingController _controller;
-  Futurey<String>? _citySearchFuture;
+  Future<String>? _citySearchFuture;
 
   @override
   void initState() {
@@ -20,10 +20,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("5.2.3 Futurebuilder"),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 32.0),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
                 controller: _controller,
@@ -38,8 +42,28 @@ class _MainScreenState extends State<MainScreen> {
                 child: const Text("Suche"),
               ),
               const SizedBox(height: 32),
-              Text("Ergebnis: Noch keine PLZ gesucht",
-                  style: Theme.of(context).textTheme.labelLarge),
+              FutureBuilder(
+                future: _citySearchFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      "Fehler: ${snapshot.error}",
+                      style: TextStyle(color: Colors.red),
+                    );
+                  } else if (snapshot.hasData) {
+                    return Text(
+                      "Ergebnis: ${snapshot.data}",
+                      style: Theme.of(context).textTheme.labelLarge,
+                    );
+                  } else {
+                    return const Text(
+                      "Ergebnis: Noch keine PLZ gesucht",
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),
